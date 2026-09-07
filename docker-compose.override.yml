@@ -1,0 +1,18 @@
+
+services:
+  backend:
+    image: !reset null
+    build: ./chileaid-backend
+
+  seed:
+    image: !reset null
+    build: ./chileaid-backend
+
+  frontend:
+    image: !reset null
+    build: ./chileaid-frontend
+    environment:
+      # Navegador: llega al backend por el puerto publicado en el host.
+      - NUXT_PUBLIC_API_BASE=http://localhost:8000
+      # SSR (dentro del contenedor): llega al backend por la red interna de Compose.
+      - NUXT_API_BASE_SERVER=http://backend:8000

@@ -1,0 +1,6 @@
+# Dependencias solo para correr los tests (no van a producción).
+#   pip install -r requirements.txt -r requirements-dev.txt
+#   pytest
+-r requirements.txt
+pytest
+httpx  # requerido por fastapi.testclient.TestClient

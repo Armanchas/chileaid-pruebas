@@ -1,0 +1,15 @@
+# Contexto local de IA — no versionar (es notas de trabajo, no doc del repo)
+CLAUDE.md
+
+# Artefactos de Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Entornos virtuales
+venv/
+.venv/
+
+# Variables de entorno locales
+.env

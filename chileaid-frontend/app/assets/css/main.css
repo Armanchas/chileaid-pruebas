@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Declaramos las familias por nombre; @nuxt/fonts las detecta, descarga
+  y autohospeda. Títulos en Barlow Condensed (peso 800-900).
+*/
+:root {
+  --navy-900: #001640;
+  --navy-800: #002675;
+  --navy-600: #0039a6;
+  --alert: #8d0001;
+  --surface: #f8f9fa;
+}
+
+html,
+body {
+  font-family: 'Barlow Condensed', system-ui, sans-serif;
+  background-color: var(--surface);
+  color: #1a1a1a;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: 'Barlow Condensed', 'Oswald', sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    line-height: 0.95;
+  }
+}
+
+@layer components {
+  /* Glassmorphism — superficie translúcida con desenfoque */
+  .glass {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .glass-light {
+    background: rgba(248, 249, 250, 0.72);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 38, 117, 0.12);
+  }
+
+  /* =====================================================
+     AUTH PAGES — Estándar visual para login / registro
+     =====================================================
+     Fondo de página : #f0f4ff  (bg-[#f0f4ff])
+     Card formulario : .glass-auth  (glass claro, fondo blanco/75)
+     Badge Chile Aid : bg-alert text-white  — no cambiar
+     Botón submit    : bg-navy-800 text-white — no cambiar
+     Textos títulos  : text-navy-800
+     Textos labels   : text-navy-600
+     Errores         : text-alert
+     Resplandores    : navy-800/8 + alert/8 (sutiles)
+     ===================================================== */
+
+  /* Glassmorphism claro — versión del card para fondos claros (#f0f4ff).
+     A diferencia de .glass (pensado para fondos oscuros), invierte la
+     superficie a blanco translúcido y suma una sombra suave para dar
+     profundidad. Úsalo en toda página de autenticación. */
+  .glass-auth {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(0, 38, 117, 0.1);
+    box-shadow: 0 4px 24px rgba(0, 38, 117, 0.08);
+  }
+}
+
+/* --- Animaciones --- */
+
+/* Entrada escalonada (stats): la opacidad/desplazamiento se dispara
+   cuando el elemento recibe la clase .is-visible desde la vista. */
+@keyframes fade-rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-rise {
+  opacity: 0;
+}
+
+.fade-rise.is-visible {
+  animation: fade-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Pulso del badge de emergencia */
+@keyframes alert-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(141, 0, 1, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(141, 0, 1, 0);
+  }
+}
+
+.alert-pulse {
+  animation: alert-pulse 2.2s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-rise,
+  .fade-rise.is-visible,
+  .alert-pulse {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

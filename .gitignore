@@ -1,0 +1,8 @@
+.env
+.env.*
+!.env.ejemplo
+
+# Documento de planificación local (no versionado): plan de trabajo,
+# endpoints pendientes, fixes y mejoras de UX.
+planning.md
+analisis.md 
