@@ -14,13 +14,11 @@ Plataforma web de gestión de ayuda humanitaria que conecta donantes particulare
 
 ## Integrantes
 
-| Nombre | Correo |
-|---|---|
-| Camilo Rojas | — |
-| Armin Hucke | a.hucke01@ufromail.cl |
-| Nicolás Llancaqueo | — |
-| Robin Vásquez | — |
-| Sebastián Yáñez | — |
+- Camilo Rojas
+- Armin Hucke
+- Nicolás Llancaqueo
+- Robin Vásquez
+- Sebastián Yáñez
 
 ---
 
