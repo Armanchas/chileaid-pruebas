@@ -44,9 +44,6 @@ defineEmits<{ donate: []; registerCenter: []; viewMap: [] }>()
           {{ content.subtitle }}
         </p>
 
-        <!-- CTA principal = "Ver mapa de centros" (rojo/sólido): acción pública
-             sin sesión. "Donar" y "Registrar centro" quedan como acciones
-             transparentes (glass), misma jerarquía secundaria. -->
         <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <BaseButton variant="primary" size="lg" @click="$emit('viewMap')">
             Ver mapa de centros
