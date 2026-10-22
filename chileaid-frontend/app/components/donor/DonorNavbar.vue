@@ -36,7 +36,10 @@ function isActive(to: string): boolean {
   <header
     class="glass-light fixed inset-x-0 top-0 z-40 hidden h-14 md:block"
   >
-    <nav class="mx-auto flex h-full max-w-5xl items-center justify-between px-6">
+    <nav
+      aria-label="Navegación principal de donante"
+      class="mx-auto flex h-full max-w-5xl items-center justify-between px-6"
+    >
       <NuxtLink
         to="/donor"
         class="font-display text-xl font-black uppercase tracking-tight text-navy-800"
@@ -93,6 +96,7 @@ function isActive(to: string): boolean {
 
   <!-- Mobile: barra inferior fija (bottom nav) -->
   <nav
+    aria-label="Navegación móvil de donante"
     class="glass-light fixed inset-x-0 bottom-0 z-40 flex h-[60px] items-stretch md:hidden"
   >
     <NuxtLink
