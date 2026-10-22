@@ -272,6 +272,50 @@ Cada ambiente tiene su propia base de datos, bucket S3 y clave de firma JWT (var
 
 ---
 
+## Análisis de calidad con SonarQube
+
+El análisis estático se hace con SonarQube 9.9 Community levantado en Docker (puerto 9100) y el scanner oficial también en Docker.
+
+**1. Levantar SonarQube**
+
+```bash
+docker run -d --name sonarqube -p 9100:9000 sonarqube:9.9-community
+```
+
+La primera vez tarda un par de minutos. Cuando `http://localhost:9100` responda, entra con `admin` / `admin` y cambia la contraseña.
+
+**2. Crear el proyecto y el token**
+
+1. *Projects → Create project → Manually*: project key `chileaid`, rama principal `main`.
+2. Elige *Locally* y genera un token (queda con formato `sqp_...`). Guárdalo en una variable de entorno; no lo subas al repositorio.
+
+**3. Configuración del análisis**
+
+[sonar-project.properties](sonar-project.properties), en la raíz, define `sonar.sources` (`chileaid-backend/app`, `chileaid-backend/seed.py` y `chileaid-frontend/app`) y excluye `node_modules`, `.nuxt`, `.output`, `__pycache__`, virtualenvs, migraciones de Alembic y archivos generados. Si se generan reportes de cobertura, se agregan `sonar.python.coverage.reportPaths` (`coverage.xml`) y `sonar.javascript.lcov.reportPaths` (lcov).
+
+**4. Ejecutar el scanner**
+
+```bash
+export SONAR_TOKEN=<tu token sqp_...>
+docker run --rm --network host \
+  -e SONAR_HOST_URL=http://localhost:9100 \
+  -e SONAR_TOKEN="$SONAR_TOKEN" \
+  -v "$(pwd):/usr/src" \
+  sonarsource/sonar-scanner-cli
+```
+
+Los resultados quedan en `http://localhost:9100/dashboard?id=chileaid`. El scanner crea la carpeta local `.scannerwork/`, que no hay que versionar.
+
+**Variable `SEED_DEFAULT_PASSWORD`**
+
+Sonar marca las contraseñas escritas en el código como punto de seguridad, por lo que `chileaid-backend/seed.py` ya no las trae fijas. Todas las cuentas del seed (admin, organizaciones y donantes de demo) usan la contraseña de la variable de entorno `SEED_DEFAULT_PASSWORD`. No hay valor por defecto: si la variable no está definida o está vacía, el seed aborta con un mensaje claro. Defínela en tu `.env` (hay una plantilla en `.env.ejemplo`); `docker-compose.yml` se la pasa al servicio `seed`. En desarrollo local sin Docker:
+
+```bash
+SEED_DEFAULT_PASSWORD='<una-clave-segura>' python seed.py
+```
+
+---
+
 # Flujo de Git
 
 ## Estrategia de ramas
