@@ -72,6 +72,8 @@ from app.services.reception_service import (
     list_pending_receptions,
 )
 
+ORG_WITHOUT_CENTER_MSG = "La organización aún no tiene un centro registrado"
+
 router = APIRouter(prefix="/org", tags=["org"])
 
 
@@ -85,7 +87,7 @@ def get_org_center(
     if center is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="La organización aún no tiene un centro registrado",
+            detail=ORG_WITHOUT_CENTER_MSG,
         )
     return build_org_center_dto(center)
 
@@ -184,7 +186,7 @@ def create_org_need(
     if center is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="La organización aún no tiene un centro registrado",
+            detail=ORG_WITHOUT_CENTER_MSG,
         )
     insumo = get_insumo(db, payload.insumo_id)
     if insumo is None:
@@ -207,7 +209,7 @@ def update_org_need(
     if center is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="La organización aún no tiene un centro registrado",
+            detail=ORG_WITHOUT_CENTER_MSG,
         )
     need = get_need_in_center(db, need_id, center)
     if need is None:
@@ -231,7 +233,7 @@ def close_org_need(
     if center is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="La organización aún no tiene un centro registrado",
+            detail=ORG_WITHOUT_CENTER_MSG,
         )
     need = get_need_in_center(db, need_id, center)
     if need is None:
