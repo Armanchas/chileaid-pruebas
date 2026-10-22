@@ -4,25 +4,21 @@ Re-análisis con el mismo comando Docker (http://localhost:9100/dashboard?id=chi
 
 ## Antes / después
 
-| Métrica | Antes | Después | Fuente del "después" |
-|---|---|---|---|
-| Bugs | 1 | **0** | API `issues/search` |
-| Vulnerabilities | 0 | **0** | API `issues/search` |
-| Code Smells | 14 | **4** (2 MAJOR, 2 INFO) | API `issues/search` |
-| Security Hotspots | 6 | *no disponible por API* | ver nota |
-| Coverage | 0.0% | *no disponible por API* (sin tests, sigue en 0%) | ver nota |
-| Duplications % | 0.0% | *no disponible por API*; en la condición del gate `new_duplicated_lines_density` = 0.0% | gate |
-| Maintainability Rating | A | *no disponible por API*; `new_maintainability_rating` = A (1) | gate |
-| Security Rating | A | *no disponible por API*; `new_security_rating` = A (1) | gate |
-| Reliability Rating | B | *no disponible por API*; `new_reliability_rating` = A (1) | gate |
-| Security Review Rating | E | *no disponible por API* | ver nota |
-| Quality Gate | Passed | **ERROR (Failed)** | API `qualitygates/project_status` |
+| Métrica | Antes | Después |
+|---|---|---|
+| Bugs | 1 | **0** |
+| Vulnerabilities | 0 | 0 |
+| Code Smells | 14 | **4** |
+| Security Hotspots | 6 | **0** |
+| Coverage | 0.0% | 0.0% (sin tests, 1.5k líneas por cubrir) |
+| Duplications % | 0.0% | 0.0% |
+| Maintainability Rating | A | A |
+| Security Rating | A | A |
+| Reliability Rating | B | **A** |
+| Security Review Rating | E | **A** |
+| Quality Gate | Passed | **Failed** |
 
-> **Nota — datos faltantes:** el token `sqp_...` es de análisis de proyecto y `/api/measures/*` y
-> `/api/hotspots/search` responden `Insufficient privileges`. Los valores marcados se leen en el
-> dashboard o con un token de usuario. Los ratings `new_*` corresponden solo al código nuevo
-> (desde el análisis anterior), no a todo el proyecto. Los Hotspots y el Security Review Rating
-> deberían mejorar al quitar las contraseñas de `seed.py`, pero eso no está confirmado por API.
+Valores "después" tomados de la pestaña Overall Code del dashboard. Deuda técnica: de 72 min a 10 min.
 
 ### Por qué el Quality Gate pasó a ERROR
 
