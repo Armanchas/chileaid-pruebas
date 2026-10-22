@@ -16,8 +16,11 @@ Plataforma web de gestión de ayuda humanitaria que conecta donantes particulare
 
 | Nombre | Correo |
 |---|---|
-| Ian Cicarelli | i.cicarelli03@ufromail.cl |
+| Camilo Rojas | — |
 | Armin Hucke | a.hucke01@ufromail.cl |
+| Nicolás Llancaqueo | — |
+| Robin Vásquez | — |
+| Sebastián Yáñez | — |
 
 ---
 
