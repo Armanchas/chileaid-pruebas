@@ -53,9 +53,12 @@ def slug(text: str) -> str:
 
 ADMIN_EMAIL = "admin@chileaid.cl"
 
+INSUMO_AGUA_EMBOTELLADA = "Agua embotellada"
+REGION_BIOBIO = "Bío Bío"
+
 # (nombre, categoria, unidad) — catálogo base de 12 insumos.
 INSUMOS: list[tuple[str, InsumoCategory, str]] = [
-    ("Agua embotellada", InsumoCategory.AGUA, "litros"),
+    (INSUMO_AGUA_EMBOTELLADA, InsumoCategory.AGUA, "litros"),
     ("Alimentos no perecibles", InsumoCategory.ALIMENTOS, "kg"),
     ("Arroz", InsumoCategory.ALIMENTOS, "kg"),
     ("Frazadas", InsumoCategory.ABRIGO, "unidades"),
@@ -78,7 +81,7 @@ ORGANIZACIONES: list[dict] = [
         "password": "org1234",
         "tipo_centro": TipoCentro.AMBOS,
         "direccion": "Valdivia 440, Los Ángeles, Bío Bío",
-        "region": "Bío Bío",
+        "region": REGION_BIOBIO,
         "contacto_nombre": "Juan Pérez",
         "telefono": "+56912345678",
         "estado": OrganizationStatus.ACTIVA,
@@ -117,7 +120,7 @@ ORGANIZACIONES: list[dict] = [
         "password": "org1234",
         "tipo_centro": TipoCentro.AMBOS,
         "direccion": "O'Higgins 525, Concepción, Bío Bío",
-        "region": "Bío Bío",
+        "region": REGION_BIOBIO,
         "contacto_nombre": "Felipe Araya",
         "telefono": "+56956789012",
         "estado": OrganizationStatus.ACTIVA,
@@ -130,7 +133,7 @@ ORGANIZACIONES: list[dict] = [
         "password": "org1234",
         "tipo_centro": TipoCentro.AMBOS,
         "direccion": "Caupolicán 521, Concepción, Bío Bío",
-        "region": "Bío Bío",
+        "region": REGION_BIOBIO,
         "contacto_nombre": "Ana Rojas",
         "telefono": "+56945678901",
         "estado": OrganizationStatus.RECHAZADA,
@@ -161,7 +164,7 @@ DONANTES: list[tuple[str, str, str, str]] = [
 # (key, nombre, tipo, zona, fecha_inicio) — emergencias activas. La `key` enlaza
 # cada centro con su emergencia (ver CENTROS); dos eventos en regiones distintas.
 EMERGENCIAS: list[tuple[str, str, EmergencyType, str, date]] = [
-    ("biobio_incendio", "Incendio Forestal Bío Bío 2026", EmergencyType.INCENDIO, "Bío Bío", date(2026, 1, 15)),
+    ("biobio_incendio", "Incendio Forestal Bío Bío 2026", EmergencyType.INCENDIO, REGION_BIOBIO, date(2026, 1, 15)),
     ("araucania_terremoto", "Terremoto La Araucanía 2026", EmergencyType.TERREMOTO, "La Araucanía", date(2026, 5, 18)),
 ]
 
@@ -183,7 +186,7 @@ CENTROS: list[dict] = [
         "latitud": -37.4697,
         "longitud": -72.3522,
         "needs": [
-            ("Agua embotellada", 500, 200, 0, Urgencia.ALTA),
+            (INSUMO_AGUA_EMBOTELLADA, 500, 200, 0, Urgencia.ALTA),
             ("Frazadas", 100, 30, 0, Urgencia.MEDIA),
             ("Arroz", 50, 0, 0, Urgencia.BAJA),
         ],
@@ -198,7 +201,7 @@ CENTROS: list[dict] = [
         "latitud": -37.7975,
         "longitud": -72.7164,
         "needs": [
-            ("Agua embotellada", 200, 190, 0, Urgencia.ALTA),   # 95% (casi al tope)
+            (INSUMO_AGUA_EMBOTELLADA, 200, 190, 0, Urgencia.ALTA),   # 95% (casi al tope)
             ("Frazadas", 100, 88, 0, Urgencia.MEDIA),           # 88%
             ("Medicamentos básicos", 50, 45, 0, Urgencia.ALTA),  # 90%
         ],
