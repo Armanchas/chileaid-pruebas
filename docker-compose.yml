@@ -46,6 +46,7 @@ services:
       - S3_SECRET_KEY=${S3_SECRET_KEY}
       - S3_BUCKET_NAME=${S3_BUCKET_NAME}
       - S3_REGION=${S3_REGION}
+      - SEED_DEFAULT_PASSWORD=${SEED_DEFAULT_PASSWORD}
     depends_on:
       db:
         condition: service_healthy

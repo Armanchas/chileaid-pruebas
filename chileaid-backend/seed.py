@@ -8,6 +8,7 @@ donantes, una emergencia con su centro de acopio georreferenciado y necesidades.
 
 from __future__ import annotations
 
+import os
 import sys
 from datetime import date
 
@@ -78,7 +79,6 @@ ORGANIZACIONES: list[dict] = [
         "nombre": "Cuerpo de Bomberos Los Ángeles",
         "rut": "70.120.300-K",
         "email": "bomberos.losangeles@chileaid.cl",
-        "password": "org1234",
         "tipo_centro": TipoCentro.AMBOS,
         "direccion": "Valdivia 440, Los Ángeles, Bío Bío",
         "region": REGION_BIOBIO,
@@ -91,7 +91,6 @@ ORGANIZACIONES: list[dict] = [
         "nombre": "Cruz Roja Angol",
         "rut": "71.234.500-2",
         "email": "cruzroja.angol@chileaid.cl",
-        "password": "org1234",
         "tipo_centro": TipoCentro.CENTRO_ACOPIO,
         "direccion": "Gral. Oscar Bonilla 695, Angol, Araucanía",
         "region": "Araucanía",
@@ -104,7 +103,6 @@ ORGANIZACIONES: list[dict] = [
         "nombre": "Municipalidad de Temuco",
         "rut": "69.150.100-5",
         "email": "municipalidad.temuco@chileaid.cl",
-        "password": "org1234",
         "tipo_centro": TipoCentro.PUNTO_DISTRIBUCION,
         "direccion": "Prat 650, Temuco, Araucanía",
         "region": "Araucanía",
@@ -117,7 +115,6 @@ ORGANIZACIONES: list[dict] = [
         "nombre": "Municipalidad de Concepción",
         "rut": "69.264.100-7",
         "email": "municipalidad.concepcion@chileaid.cl",
-        "password": "org1234",
         "tipo_centro": TipoCentro.AMBOS,
         "direccion": "O'Higgins 525, Concepción, Bío Bío",
         "region": REGION_BIOBIO,
@@ -130,7 +127,6 @@ ORGANIZACIONES: list[dict] = [
         "nombre": "ONG Techo Concepción",
         "rut": "65.432.100-8",
         "email": "techo.concepcion@chileaid.cl",
-        "password": "org1234",
         "tipo_centro": TipoCentro.AMBOS,
         "direccion": "Caupolicán 521, Concepción, Bío Bío",
         "region": REGION_BIOBIO,
@@ -143,7 +139,6 @@ ORGANIZACIONES: list[dict] = [
         "nombre": "Fundación Refugio Sur",
         "rut": "76.318.900-1",
         "email": "refugio.sur@chileaid.cl",
-        "password": "org1234",
         "tipo_centro": TipoCentro.CENTRO_ACOPIO,
         "direccion": "Av. Diego Portales 1450, Puerto Montt, Los Lagos",
         "region": "Los Lagos",
@@ -154,11 +149,11 @@ ORGANIZACIONES: list[dict] = [
     },
 ]
 
-# (nombre, apellido, email, password)
-DONANTES: list[tuple[str, str, str, str]] = [
-    ("Pedro", "Soto", "pedro.soto@gmail.com", "donante1234"),
-    ("Valentina", "Mora", "valentina.mora@gmail.com", "donante1234"),
-    ("Diego", "Fuentes", "diego.fuentes@gmail.com", "donante1234"),
+# (nombre, apellido, email)
+DONANTES: list[tuple[str, str, str]] = [
+    ("Pedro", "Soto", "pedro.soto@gmail.com"),
+    ("Valentina", "Mora", "valentina.mora@gmail.com"),
+    ("Diego", "Fuentes", "diego.fuentes@gmail.com"),
 ]
 
 # (key, nombre, tipo, zona, fecha_inicio) — emergencias activas. La `key` enlaza
@@ -240,7 +235,22 @@ CENTROS: list[dict] = [
 ]
 
 
+def get_seed_password() -> str:
+    """Contraseña común de las cuentas del seed, leída de SEED_DEFAULT_PASSWORD.
+
+    No hay valor por defecto: si la variable falta o está vacía, el seed aborta.
+    """
+    password = os.getenv("SEED_DEFAULT_PASSWORD")
+    if not password:
+        sys.exit(
+            "✗ Falta la variable de entorno SEED_DEFAULT_PASSWORD. "
+            "Defínela (ver .env.ejemplo) antes de correr el seed."
+        )
+    return password
+
+
 def seed() -> None:
+    seed_password = get_seed_password()
     # Requiere que las migraciones ya estén aplicadas (`alembic upgrade head`,
     # §2.4). El servicio `seed` de docker-compose lo hace antes de llamar a
     # este script; en dev local corré `alembic upgrade head` antes de `python seed.py`.
@@ -254,7 +264,7 @@ def seed() -> None:
         # 1) ADMIN
         db.add(User(
             email=ADMIN_EMAIL,
-            password_hash=hash_pw("admin1234"),
+            password_hash=hash_pw(seed_password),
             role=UserRole.ADMIN,
         ))
         db.flush()
@@ -274,7 +284,7 @@ def seed() -> None:
         for data in ORGANIZACIONES:
             user = User(
                 email=data["email"],
-                password_hash=hash_pw(data["password"]),
+                password_hash=hash_pw(seed_password),
                 role=UserRole.ORG,
             )
             db.add(user)
@@ -306,10 +316,10 @@ def seed() -> None:
         print(f"✓ {len(ORGANIZACIONES)} organizaciones insertadas (con su usuario y documento)")
 
         # 4) DONANTES
-        for nombre, apellido, email, password in DONANTES:
+        for nombre, apellido, email in DONANTES:
             db.add(User(
                 email=email,
-                password_hash=hash_pw(password),
+                password_hash=hash_pw(seed_password),
                 role=UserRole.DONOR,
                 nombre=nombre,
                 apellido=apellido,
