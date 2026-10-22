@@ -201,6 +201,9 @@ function clearFilters(): void {
       <!-- Tabla (desktop) -->
       <div class="mt-6 hidden overflow-hidden rounded-2xl md:block">
         <table class="w-full border-collapse text-left">
+          <caption class="sr-only">
+            Catálogo de insumos con su categoría y unidad de medida
+          </caption>
           <thead>
             <tr class="border-b border-slate-200 bg-white/60">
               <th class="px-4 py-3 font-display text-xs font-bold uppercase tracking-widest text-navy-600">
